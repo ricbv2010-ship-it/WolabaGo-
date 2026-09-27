@@ -1,0 +1,8 @@
+{
+  "name": "WolabaGo - Talamanca Caribbean Tourism Assistant",
+  "description": "AI tourism assistant for Talamanca, Puerto Viejo, Cahuita, Manzanillo and Costa Rica's Caribbean coast with verified local insights and itinerary planning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
