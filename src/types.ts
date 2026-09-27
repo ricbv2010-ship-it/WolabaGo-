@@ -108,6 +108,23 @@ export interface CommunityEvent {
   isRealTimeScraped?: boolean;
 }
 
+export type WisdomCategory = 'hidden-trails' | 'fruit-seasons' | 'swimming-spots' | 'food-secrets' | 'wildlife-respect';
+
+export interface WisdomTip {
+  id: string;
+  title: string;
+  category: WisdomCategory;
+  guideName: string;
+  guideRole: string;
+  location: string;
+  area: string;
+  tip: string;
+  bestTimingOrSeason: string;
+  coordinates?: string;
+  culturalInsight: string;
+  suggestedPrompt: string;
+}
+
 export type WeatherLocationKey = 'puerto-viejo' | 'playa-negra' | 'cahuita' | 'manzanillo';
 
 export interface WeatherData {

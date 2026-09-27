@@ -126,10 +126,6 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ onAskWeatherQuesti
                 <Droplets className="w-3.5 h-3.5 text-blue-400" />
                 <span>{weather.humidity}% hum</span>
               </div>
-              <div className="flex items-center gap-1" title="Precipitation Probability">
-                <CloudRain className="w-3.5 h-3.5 text-blue-400" />
-                <span>{weather.precipitationProbability}% rain chance</span>
-              </div>
               <div className="flex items-center gap-1" title="Wind & Ocean state">
                 <Wind className="w-3.5 h-3.5 text-blue-300" />
                 <span>{weather.windSpeed} km/h</span>
@@ -226,8 +222,8 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ onAskWeatherQuesti
                     <span className="text-xs font-bold text-white block">
                       {fc.maxTemp}°
                     </span>
-                    <span className="text-[10px] text-blue-300 block">
-                      {fc.precipProb}% rain
+                    <span className="text-[10px] text-blue-300 block truncate" title={fc.condition}>
+                      {fc.condition}
                     </span>
                   </div>
                 ))}

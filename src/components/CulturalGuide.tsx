@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { GLOSSARY_ITEMS } from '../data/localKnowledge';
 import { WolabaBrand } from './WolabaBrand';
+import { CommunityWisdom } from './CommunityWisdom';
 
 interface CulturalGuideProps {
   onAskQuestion: (question: string) => void;
@@ -36,6 +37,9 @@ export const CulturalGuide: React.FC<CulturalGuideProps> = ({ onAskQuestion }) =
           </p>
         </div>
       </div>
+
+      {/* Community Wisdom: Verified Guide Tips & Hidden Spots */}
+      <CommunityWisdom onAskInChat={onAskQuestion} />
 
       {/* Section 1: Afro-Caribbean & Bribri Heritage */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

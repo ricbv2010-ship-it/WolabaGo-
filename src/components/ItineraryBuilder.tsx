@@ -13,14 +13,20 @@ import {
   VolumeX, 
   ExternalLink
 } from 'lucide-react';
-import { GroundingSource } from '../types';
+import { GroundingSource, AppLanguage } from '../types';
 import { PackingChecklist } from './PackingChecklist';
+import { TRANSLATIONS } from '../i18n/languages';
 
 interface ItineraryBuilderProps {
   onSendToChat: (itineraryText: string) => void;
+  currentLanguage?: AppLanguage;
 }
 
-export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat }) => {
+export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ 
+  onSendToChat,
+  currentLanguage = 'en'
+}) => {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
   const [days, setDays] = useState<number>(3);
   const [vibe, setVibe] = useState<string>('Authentic Culture & Wildlife Highlights');
   const [transport, setTransport] = useState<string>('Classic Cruiser Bicycle & MEPE Bus');
@@ -48,6 +54,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           interests,
           transport,
           pace,
+          language: currentLanguage,
         }),
       });
 
@@ -124,13 +131,13 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
         <div className="relative z-10">
           <div className="flex items-center gap-2 text-[#CE1126] text-xs font-bold uppercase tracking-wider mb-1">
             <CalendarDays className="w-4 h-4 text-[#ef4444]" />
-            <span className="text-blue-200">Practical Travel Planning</span>
+            <span className="text-blue-200">WolabaGo Planner</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-['Outfit']">
-            Personalized Talamanca Itinerary Generator
+            {t.itinTitle}
           </h2>
           <p className="text-sm text-blue-100/90 mt-1 max-w-2xl leading-relaxed">
-            Create an itinerary that respects Caribbean distances, sun intensity, opening hours, and travel times along Route 256. Powered by Gemini with live Google Search verifications.
+            {t.itinSubtitle}
           </p>
         </div>
       </div>
@@ -144,7 +151,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           <div>
             <label className="text-xs font-bold text-white uppercase tracking-wider block mb-2 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-[#ef4444]" />
-              Duration: {days} {days === 1 ? 'Day' : 'Days'}
+              {t.itinDays}: {days} {currentLanguage === 'es' ? (days === 1 ? 'Día' : 'Días') : (days === 1 ? 'Day' : 'Days')}
             </label>
             <div className="flex gap-2">
               {[1, 2, 3, 5, 7].map((d) => (
@@ -168,7 +175,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           <div>
             <label className="text-xs font-bold text-white uppercase tracking-wider block mb-2 flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-[#ef4444]" />
-              Travel Vibe
+              {t.itinVibe}
             </label>
             <div className="space-y-1.5">
               {vibes.map((v) => (
@@ -195,21 +202,21 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           <div>
             <label className="text-xs font-bold text-white uppercase tracking-wider block mb-2 flex items-center gap-1.5">
               <Bike className="w-3.5 h-3.5 text-[#ef4444]" />
-              Transportation Choice
+              {t.itinTransport}
             </label>
             <div className="space-y-1.5">
-              {transports.map((t) => (
+              {transports.map((tr) => (
                 <button
-                  key={t}
+                  key={tr}
                   type="button"
-                  onClick={() => setTransport(t)}
+                  onClick={() => setTransport(tr)}
                   className={`w-full text-left p-2.5 rounded-xl text-xs transition-all border ${
-                    transport === t
+                    transport === tr
                       ? 'bg-[#CE1126] border-[#CE1126] text-white font-bold shadow-md shadow-red-950/60'
                       : 'bg-[#07172f] border border-[#1b3f73] text-blue-200 hover:border-blue-400 hover:text-white'
                   }`}
                 >
-                  {t}
+                  {tr}
                 </button>
               ))}
             </div>
@@ -219,7 +226,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           <div>
             <label className="text-xs font-bold text-white uppercase tracking-wider block mb-2 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#ef4444]" />
-              Daily Pace
+              {t.itinPace}
             </label>
             <div className="space-y-1.5">
               {paces.map((p) => (
@@ -242,13 +249,13 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
           {/* Key Interests Input */}
           <div>
             <label className="text-xs font-bold text-white uppercase tracking-wider block mb-1">
-              Custom Must-Haves / Dietary
+              {t.itinInterests}
             </label>
             <input
               type="text"
               value={interests}
               onChange={(e) => setInterests(e.target.value)}
-              placeholder="e.g. Vegetarian, Salsa Brava surf check, Sloths, Cacao tour..."
+              placeholder={currentLanguage === 'es' ? 'ej. Vegetariano, Salsa Brava surf, Perezosos, Tour de cacao...' : 'e.g. Vegetarian, Salsa Brava surf check, Sloths, Cacao tour...'}
               className="w-full bg-[#07172f] border border-[#1b3f73] rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-400"
             />
           </div>
@@ -268,8 +275,8 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
             <Sparkles className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>
               {isLoading
-                ? 'WolabaGo is calculating verified travel times & generating itinerary...'
-                : `Generate Verified ${days}-Day Talamanca Plan`}
+                ? t.itinGenerating
+                : (currentLanguage === 'es' ? `Generar Itinerario Verificado de ${days} Días` : `Generate Verified ${days}-Day Talamanca Plan`)}
             </span>
           </button>
         </div>
@@ -297,7 +304,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
                 </span>
               </div>
               <h3 className="text-xl font-bold text-white font-['Outfit'] mt-0.5">
-                Your Custom Talamanca Itinerary
+                {currentLanguage === 'es' ? 'Tu Itinerario Personalizado en Talamanca' : 'Your Custom Talamanca Itinerary'}
               </h3>
             </div>
 
@@ -307,7 +314,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
                 className="px-3 py-1.5 rounded-xl bg-[#07172f] hover:bg-[#122e58] border border-[#1b3f73] text-xs text-blue-200 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'Copied' : 'Copy'}</span>
+                <span>{copied ? t.itinCopied : t.itinCopy}</span>
               </button>
 
               {'speechSynthesis' in window && (
@@ -320,7 +327,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
                   ) : (
                     <Volume2 className="w-3.5 h-3.5" />
                   )}
-                  <span>{isSpeaking ? 'Stop' : 'Listen'}</span>
+                  <span>{isSpeaking ? t.chatStop : t.chatListen}</span>
                 </button>
               )}
 
@@ -329,7 +336,7 @@ export const ItineraryBuilder: React.FC<ItineraryBuilderProps> = ({ onSendToChat
                 className="px-3.5 py-1.5 rounded-xl bg-[#CE1126] hover:bg-[#e0192e] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-md shadow-red-950/70"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span>Discuss in Chat</span>
+                <span>{t.itinSendToChat}</span>
               </button>
             </div>
           </div>

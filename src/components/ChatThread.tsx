@@ -13,20 +13,24 @@ import {
   Compass,
   ArrowRight
 } from 'lucide-react';
-import { ChatMessage } from '../types';
+import { ChatMessage, AppLanguage } from '../types';
 import { WolabaBrand } from './WolabaBrand';
+import { TRANSLATIONS } from '../i18n/languages';
 
 interface ChatThreadProps {
   messages: ChatMessage[];
   isLoading: boolean;
   onSelectPrompt: (prompt: string) => void;
+  currentLanguage?: AppLanguage;
 }
 
 export const ChatThread: React.FC<ChatThreadProps> = ({
   messages,
   isLoading,
   onSelectPrompt,
+  currentLanguage = 'en',
 }) => {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
   const bottomRef = useRef<HTMLDivElement>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
@@ -179,13 +183,13 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
           </div>
           
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-['Outfit'] flex items-center justify-center gap-2 flex-wrap">
-            <span>¡Wha'ppen! Welcome to</span>
+            <span>{t.chatWelcomeHeading}</span>
             {/* Green, Yellow, and Red ONLY in the name WolabaGo */}
             <WolabaBrand size="2xl" />
           </h2>
           
           <p className="mt-2 text-sm text-blue-100/90 max-w-lg mx-auto leading-relaxed">
-            Your real-time AI tourism assistant for Talamanca, Puerto Viejo, Cahuita, Manzanillo, and the South Caribbean coast of Costa Rica. Ask for verified sodas, bike routes, surf spots, and custom day-by-day itineraries.
+            {t.chatWelcomeSub}
           </p>
 
           {/* Quick starter cards */}
@@ -197,14 +201,14 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
               <div>
                 <span className="text-xs font-semibold text-[#ef4444] flex items-center gap-1 mb-1">
                   <Sparkles className="w-3 h-3 text-[#ef4444]" />
-                  Gastronomy & Sodas
+                  {t.chatPromptFoodTitle}
                 </span>
                 <p className="text-xs text-white font-medium">
-                  Authentic Rice & Beans in Puerto Viejo Centro & Playa Negra
+                  {t.chatPromptFoodDesc}
                 </p>
               </div>
               <span className="text-[11px] text-blue-300 flex items-center gap-1 mt-3 group-hover:translate-x-1 transition-transform">
-                Explore food <ArrowRight className="w-3 h-3" />
+                {t.chatPromptFoodBtn} <ArrowRight className="w-3 h-3" />
               </span>
             </button>
 
@@ -215,32 +219,32 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
               <div>
                 <span className="text-xs font-semibold text-blue-300 flex items-center gap-1 mb-1">
                   <Compass className="w-3 h-3 text-blue-300" />
-                  Coastal Cycling
+                  {t.chatPromptBikeTitle}
                 </span>
                 <p className="text-xs text-white font-medium">
-                  1-Day Cruiser Bike Route from town to Manzanillo
+                  {t.chatPromptBikeDesc}
                 </p>
               </div>
               <span className="text-[11px] text-blue-300 flex items-center gap-1 mt-3 group-hover:translate-x-1 transition-transform">
-                See bike plan <ArrowRight className="w-3 h-3" />
+                {t.chatPromptBikeBtn} <ArrowRight className="w-3 h-3" />
               </span>
             </button>
 
             <button
-              onClick={() => onSelectPrompt('What are the differences between Salsa Brava, Cocles, and Playa Negra for surfing? What skills and tides are needed?')}
+              onClick={() => onSelectPrompt('What are the top hidden trails and seasonal tropical fruit cycles in Talamanca? Tell me about the secret sea cave at Punta Uva and where to try fresh cacao fruit.')}
               className="p-3.5 rounded-xl bg-[#0a1e3d] hover:bg-[#102b54] border border-[#1a3d6d] hover:border-[#CE1126]/60 transition-all group flex flex-col justify-between shadow-md"
             >
               <div>
-                <span className="text-xs font-semibold text-[#ef4444] flex items-center gap-1 mb-1">
-                  <Sparkles className="w-3 h-3 text-[#ef4444]" />
-                  Surf & Ocean Safety
+                <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1 mb-1">
+                  <Sparkles className="w-3 h-3 text-emerald-400" />
+                  {t.chatPromptWisdomTitle}
                 </span>
                 <p className="text-xs text-white font-medium">
-                  Salsa Brava reef vs Cocles beach break vs Playa Negra
+                  {t.chatPromptWisdomDesc}
                 </p>
               </div>
               <span className="text-[11px] text-blue-300 flex items-center gap-1 mt-3 group-hover:translate-x-1 transition-transform">
-                Surf intel <ArrowRight className="w-3 h-3" />
+                {t.chatPromptWisdomBtn} <ArrowRight className="w-3 h-3" />
               </span>
             </button>
 
@@ -251,14 +255,14 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
               <div>
                 <span className="text-xs font-semibold text-blue-300 flex items-center gap-1 mb-1">
                   <Compass className="w-3 h-3 text-blue-300" />
-                  National Parks
+                  {t.chatPromptParkTitle}
                 </span>
                 <p className="text-xs text-white font-medium">
-                  Cahuita National Park: trail, sloths, reef & entrance tips
+                  {t.chatPromptParkDesc}
                 </p>
               </div>
               <span className="text-[11px] text-blue-300 flex items-center gap-1 mt-3 group-hover:translate-x-1 transition-transform">
-                Park guide <ArrowRight className="w-3 h-3" />
+                {t.chatPromptParkBtn} <ArrowRight className="w-3 h-3" />
               </span>
             </button>
           </div>
@@ -308,7 +312,7 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
                     <button
                       onClick={() => handleCopy(message.id, message.content)}
                       className="p-1 rounded hover:bg-[#143769] text-blue-200 hover:text-white transition-colors"
-                      title="Copy text"
+                      title={copiedId === message.id ? t.chatCopied : t.chatCopy}
                     >
                       {copiedId === message.id ? (
                         <Check className="w-3.5 h-3.5 text-emerald-400" />
@@ -320,7 +324,7 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
                       <button
                         onClick={() => handleSpeak(message.id, message.content)}
                         className="p-1 rounded hover:bg-[#143769] text-blue-200 hover:text-white transition-colors"
-                        title={speakingId === message.id ? 'Stop listening' : 'Read aloud'}
+                        title={speakingId === message.id ? t.chatStop : t.chatListen}
                       >
                         {speakingId === message.id ? (
                           <VolumeX className="w-3.5 h-3.5 text-red-400 animate-pulse" />
@@ -397,11 +401,13 @@ export const ChatThread: React.FC<ChatThreadProps> = ({
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#CE1126] animate-ping" />
               <span className="font-semibold text-white">
-                WolabaGo is checking live data & verifying with Google Search...
+                {t.chatInputThinking}
               </span>
             </div>
             <p className="text-[11px] text-blue-200 mt-1">
-              Verifying real-time schedules, tide notes, and local Caribbean details.
+              {currentLanguage === 'es' 
+                ? 'Verificando horarios, mareas y detalles locales de Talamanca en tiempo real.'
+                : 'Verifying real-time schedules, tide notes, and local Caribbean details.'}
             </p>
           </div>
         </div>
